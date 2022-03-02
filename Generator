@@ -1,143 +1,181 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=gb2312"    />
-  <title>抽籤系統</title>
-  <style>
-    .container {
-      background-color: #055160;
-      margin-top: 10px;
-      margin-left: 300px;
-      margin-right: 300px;
-      width: auto;
-      height: auto;
-    }
-  </style>
-</head>
-<body>
-  <div class = "container">
-    <input
-      type="text"
-      style="border:0px;text-align:center;font-size:60px;background-color:#055160;"
-      id="txt">
-    <br>
-    <br>
-    <font size="20">
-      目前已經抽出<span id = "count"> 0 </span>个!
-    </font>
-    <br>
-    <input
-      type="button"
-      style='font-size:30px'
-      value="開始/加速"
-      onClick="timedCount();">  
-    <input
-      type="button"
-      style='font-size:30px'
-      value="停止/減速"
-      onClick="stopCount();Random();">  
-    <input
-      type="button"
-      style='font-size:30px'
-      value="清空數據"
-      onclick="Clear();"/>
-    <br>
-    <br>
-    <span id="display"></span>
-    <br>
-  </div>
-  <script>
-    var num = 0;
-    var arr = [];
-    var vis = [];
-    var mark = [];
-    var c = 0;
-    var k = 0;
-    var t;
-    var tt;
-    var cont = 0;
+<html lang="zh-Hant-HK">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>抽籤系統</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <style>
+            body{
+                font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+            }
+        </style>
+    </head>
+    <body class="bg-light text-dark">
+        <div class="container">
+            
+            <header>
+            <h1 style="margin-top: 20px; margin-bottom: 20px; text-align: center;">抽籤系統</h1>
+            </header>
+            <div class="alert alert-light border" role="alert">
+                <div class="row justify-content-center">
+                    <div class="col col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="alert alert-info" role="alert">
+                            <p style="text-align: center; margin-bottom: -10px; margin-top: -5px; font-size: large;">目前已抽出 <span id="count">0</span> 個</p>
+                            <hr>
+                            <h1 class="alert-heading display-2"" style="text-align: center;">
+                                <input type="text" value="-" class="form-control form-control-lg" style="border:0px; background-color:transparent; color:#055160; text-align: center; font-size: xxx-large;font-weight: bold;" id="txt" disabled="">
+                            </h1>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col col-auto">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick="timedCount();">
+                            <label class="btn btn-outline-primary bg-gradient" for="btnradio1">開始／加速</label>
+                          
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick="stopCount();Random();">
+                            <label class="btn btn-outline-primary bg-gradient" for="btnradio2">停止／減速</label>
+                          
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onclick="Clear();">
+                            <label class="btn btn-outline-primary bg-gradient" for="btnradio3">清空數據</label>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-light border" role="alert">
+                <div class="row justify-content-center">
+                    <div class="col col-sm-12 col-md-12 col-lg-7 col-xl-7">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr> 
+                                <th scope="col">#</th>
+                                <th scope="col">抽籤號碼</th>
+                            </tr>
+                            </thead>
+                            <tbody id="display"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                
+                <div class="alert alert-secondary" role="alert">
+                    <p style="font-size: smaller;">
+                        版權聲明:
+                        <br />
+                        <em>
+                            本軟體及相關文件受著作權法（《數碼千禧年版權法案》、《中華人民共和國著作權法》、《香港特別行政區版權條例》）及國際公約（《伯爾尼條約》）之保護。未經授權擅自複製或散佈本程式之全部或它的任何部分，將導致嚴厲的的民事和刑事處分，且將被依法提起最大範圍的追訴。</em>
+                            <br />
+                    <p style="font-size: smaller;">
+                        Copyright Notice:
+                        <br />
+                        <em>
+                            This computer program is protected by copyright laws (Digital Millennium Copyright Act, the Copyright Law of the People's Republic of China and the Copyright Regulations of the Hong Kong Special Administrative Region) and international treaties (Berne Treaty). Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under law.
+                        </em>
+                    </p>
+                    <p style="font-size: smaller;">
+                        作者: <em><a class="alert-link" href="https://www.github.com/TurboHK">TurboHK</a></em><br />
+                        介面美化：<em><a class="alert-link" href="https://www.github.com/chiyi4488">chiyi4488</a></em><br />
+                        特別鳴謝: <em><a class="alert-link" href="https://www.cotpear.com">台灣 Cotpear</a></em><br />
+                        查看源代碼：<em><a class="alert-link" href="https://github.com/TurboHK/RandomNumberGenerator">Github</a></em>
+                    </p>
 
-    while(true) {
-      var tt = parseInt(Math.random() * 19 + 1);
-
-      if(!mark[tt]) {
-        mark[tt] = 1;
-        vis[cont++] = tt;
-      }
-
-      if(cont === 19) {
-        break;
-      }
-    }
-
-    function timedCount() {
-      document.getElementById('txt').value = c;
-      k = k + 1;
-      k = k % (vis.length);
-      c = vis[k];
-      t = setTimeout('timedCount()', 100);
-    }
-
-    function stopCount() {
-      clearTimeout(t);
-      tt = document.getElementById('txt').value;
-    }
-
-    function Random() {
-      var draw = document.getElementById('display');
-
-      num += 1;
-      arr.push(tt);
-      draw.innerHTML = draw.innerHTML + '<h1>第' + num + '次抽中：' + tt + '<br/></h1>';
-      var tmp = [];
-      var cnt = 0;
-
-      tmp.length = 0;
-      for (var i = 0, len = vis.length; i < len; i += 1) {
-        if (vis[i] != tt) {
-          tmp[cnt] = vis[i];
-          cnt = cnt + 1;
-        }
-      }
-
-      vis.length = 0;
-      for(var i = 0; i < tmp.length; i += 1) {
-        vis[i] = tmp[i];
-      }
-
-      document.getElementById('count').innerHTML = arr.length;
-      if (arr.length === 19) {
-        alert('已經全部抽完!');
-      }
-    }
-
-    function Clear() {
-      arr = null;
-      arr = [];
-      mark = [];
-      var cont = 0;
-
-      while(true) {
-        var tt = parseInt(Math.random() * 19 + 1);
-
-        if (!mark[tt]) {
-          mark[tt] = 1;
-          vis[cont++] = tt;
-        }
-
-        if(cont === 19) {
-          break;
-        }
-      }
-      k = 0;
-      num = 0;
-      c = 0;
-      clearTimeout(t);
-      document.getElementById('txt').value=  "0";
-      document.getElementById("count").innerHTML = "0";
-      document.getElementById("display").innerHTML = "";
-    }
-  </script>
-</body>
-</html>
+                </div>
+            </footer>
+        </div>
+        <script>
+            var num = 0;
+            var arr = [];
+            var vis = [];
+            var mark = [];
+            var c = 0;
+            var k = 0;
+            var t;
+            var tt;
+            var cont = 0;
+         
+            while(true) {
+              var tt = parseInt(Math.random() * 52 + 1);
+              if(!mark[tt]) {
+                mark[tt] = 1;
+                vis[cont++] = tt;
+              }
+              if(cont === 52) {
+                break;
+              }
+            }
+         
+            function timedCount() {
+              document.getElementById('txt').value = c;
+              k = k + 1;
+              k = k % (vis.length);
+              c = vis[k];
+              t = setTimeout('timedCount()', 100);
+            }
+         
+            function stopCount() {
+              clearTimeout(t);
+              tt = document.getElementById('txt').value;
+            }
+         
+            function Random() {
+              var draw = document.getElementById('display');
+         
+              num += 1;
+              arr.push(tt);
+              draw.innerHTML = draw.innerHTML + '<tr><th scope="row">' + num + '</th>'+'<td>' + tt + '</td>'+'</tr>';
+            //   draw.innerHTML = draw.innerHTML + '<h1>第~' + num + '次抽中：' + tt + '<br/></h1>';
+              var tmp = [];
+              var cnt = 0;
+         
+              tmp.length = 0;
+              for (var i = 0, len = vis.length; i < len; i += 1) {
+                if (vis[i] != tt) {
+                  tmp[cnt] = vis[i];
+                  cnt = cnt + 1;
+                }
+              }
+         
+              vis.length = 0;
+              for(var i = 0; i < tmp.length; i += 1) {
+                vis[i] = tmp[i];
+              }
+         
+              document.getElementById('count').innerHTML = arr.length;
+              if (arr.length === 52) {
+                alert('已經全部抽完!');
+              }
+            }
+         
+            function Clear() {
+              arr = null;
+              arr = [];
+              mark = [];
+              var cont = 0;
+         
+              while(true) {
+                var tt = parseInt(Math.random() * 52 + 1);
+         
+                if (!mark[tt]) {
+                  mark[tt] = 1;
+                  vis[cont++] = tt;
+                }
+         
+                if(cont === 52) {
+                  break;
+                }
+              }
+              k = 0;
+              num = 0;
+              c = 0;
+              clearTimeout(t);
+              document.getElementById('txt').value=  "-";
+              document.getElementById("count").innerHTML = "0";
+              document.getElementById("display").innerHTML = "";
+            }
+          </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    </body>
+</html> 
