@@ -6,7 +6,7 @@
   <title>抽籤系統</title>
   <style>
     .container {
-      background-color: #ffff99;
+      background-color: #055160;
       margin-top: 10px;
       margin-left: 300px;
       margin-right: 300px;
@@ -19,7 +19,7 @@
   <div class = "container">
     <input
       type="text"
-      style="border:0px;text-align:center;font-size:60px;background-color:#ffff99;"
+      style="border:0px;text-align:center;font-size:60px;background-color:#055160;"
       id="txt">
     <br>
     <br>
