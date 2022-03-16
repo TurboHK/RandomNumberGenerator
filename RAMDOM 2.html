@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>抽籤系統</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <script src="https://livejs.com/live.js"></script>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-light text-dark">
+  <div class="container">
+
+    <header>
+      <h1 style="margin-top: 20px; margin-bottom: 20px; text-align: center;">抽籤系統</h1>
+    </header>
+    <div class="alert alert-light border" role="alert">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 align-self-center" style="border: #055160;">
+            <div class="row justify-content-center align-middle">
+              <div class="col col-sm-8 col-md-8 col-lg-8 col-xl-8 ">
+                <div class="alert alert-info align-items-center" role="alert">
+                  <p style="text-align: center; margin-bottom: -10px; margin-top: -5px; font-size: large;">目前已抽出 <span
+                      id="count">0</span> 個</p>
+                  <hr>
+                  <h1 class="alert-heading display-2"" style=" text-align: center;">
+                    <input type="text" value="-" class="form-control form-control-lg"
+                      style="border:0px; background-color:transparent; color:#055160; text-align: center; font-size: xxx-large;font-weight: bold;"
+                      id="txt" disabled="">
+                  </h1>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="btn-group" role="group">
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
+                    onClick="timedCount();">
+                  <label class="btn btn-outline-primary bg-gradient" for="btnradio1">開始／加速</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
+                    onClick="stopCount();Random();">
+                  <label class="btn btn-outline-primary bg-gradient" for="btnradio2">停止／減速</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"
+                    onclick="Clear();">
+                  <label class="btn btn-outline-primary bg-gradient" for="btnradio3">清空數據</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-center align-self-start">
+              <table class="table table-striped table-sm" style="height: 100%;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">抽籤號碼</th>
+                  </tr>
+                </thead>
+                <tbody id="display"></tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+  <script>
+    var num = 0;
+    var arr = [];
+    var vis = [];
+    var mark = [];
+    var c = 0;
+    var k = 0;
+    var t;
+    var tt;
+    var cont = 0;
+
+    while (true) {
+      var tt = parseInt(Math.random() * 53 + 1);
+      if (!mark[tt]) {
+        mark[tt] = 1;
+        vis[cont++] = tt;
+      }
+      if (cont === 53) {
+        break;
+      }
+    }
+
+    function timedCount() {
+      document.getElementById('txt').value = c;
+      k = k + 1;
+      k = k % (vis.length);
+      c = vis[k];
+      t = setTimeout('timedCount()', 100);
+    }
+
+    function stopCount() {
+      clearTimeout(t);
+      tt = document.getElementById('txt').value;
+    }
+
+    function Random() {
+      var draw = document.getElementById('display');
+
+      num += 1;
+      arr.push(tt);
+      draw.innerHTML = '<tr><th scope="row">' + num + '</th>' + '<td>' + tt + '</td>' + '</tr>' + draw.innerHTML;
+      //   draw.innerHTML = draw.innerHTML + '<h1>第~' + num + '次抽中：' + tt + '<br/></h1>';
+      var tmp = [];
+      var cnt = 0;
+
+      tmp.length = 0;
+      for (var i = 0, len = vis.length; i < len; i += 1) {
+        if (vis[i] != tt) {
+          tmp[cnt] = vis[i];
+          cnt = cnt + 1;
+        }
+      }
+
+      vis.length = 0;
+      for (var i = 0; i < tmp.length; i += 1) {
+        vis[i] = tmp[i];
+      }
+
+      document.getElementById('count').innerHTML = arr.length;
+      if (arr.length === 53) {
+        alert('已經全部抽完!');
+      }
+    }
+
+    function Clear() {
+      arr = null;
+      arr = [];
+      mark = [];
+      var cont = 0;
+
+      while (true) {
+        var tt = parseInt(Math.random() * 53 + 1);
+
+        if (!mark[tt]) {
+          mark[tt] = 1;
+          vis[cont++] = tt;
+        }
+
+        if (cont === 53) {
+          break;
+        }
+      }
+      k = 0;
+      num = 0;
+      c = 0;
+      clearTimeout(t);
+      document.getElementById('txt').value = "-";
+      document.getElementById("count").innerHTML = "0";
+      document.getElementById("display").innerHTML = "";
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
